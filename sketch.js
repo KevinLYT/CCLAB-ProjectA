@@ -79,6 +79,13 @@ function updateCreature1() {
   vx1 += map(noiseValueX, 0, 1, -0.1, 0.1); // Adjust velocity based on noise
   vy1 += map(noiseValueY, 0, 1, -0.1, 0.1); // Adjust velocity based on noise
 
+  if (targetFlower) {
+    let angleToFlower = atan2(targetFlower.y - y1, targetFlower.x - x1);
+    let force = 0.2;
+    vx1 += cos(angleToFlower) * force;
+    vy1 += sin(angleToFlower) * force;
+  }
+
   // check mouse is nearby
   let mouseDist = dist(mouseX, mouseY, x1, y1);
   if (mouseDist < 50) {
@@ -133,6 +140,13 @@ function updateCreature2() {
   vx2 += map(noiseValueX, 0, 1, -0.1, 0.1); // Adjust velocity based on noise
   vy2 += map(noiseValueY, 0, 1, -0.1, 0.1); // Adjust velocity based on noise
 
+   if (targetFlower) {
+    let angleToFlower = atan2(targetFlower.y - y2, targetFlower.x - x2);
+    let force = 0.2;
+    vx2 += cos(angleToFlower) * force;
+    vy2 += sin(angleToFlower) * force;
+  }
+
   // check if mouse is nearby
   let mouseDist = dist(mouseX, mouseY, x2, y2);
   if (mouseDist < 50) {
@@ -182,20 +196,19 @@ function updateCreature2() {
 function drawFish(x, y, size, col, vx, vy) {
   push();
   translate(x, y);
-  rotate(atan2(vy, vx)); // Rotate fish in the direction of movement
+  rotate(atan2(vy, vx));
   fill(col);
   noStroke();
-
-  // Body (ellipse)
   ellipse(0, 0, size, size * 0.6);
-
-  // Tail (triangle)
-  fill(col);
   triangle(-size * 0.6, 0, -size, -size * 0.3, -size, size * 0.3);
 
-  // Eye (small circle)
-  fill(255);
+  if (red(col) === 255 && green(col) === 255 && blue(col) === 255) {
+    fill(0);
+  } else {
+    fill(255);
+  }
   ellipse(size * 0.2, -size * 0.1, size * 0.1, size * 0.1);
+
   pop();
 }
 
@@ -270,6 +283,7 @@ function mousePressed() {
     let distToFlower = dist(mouseX, mouseY, flower.x, flower.y);
     if (distToFlower < 30) {
       flower.shake = 10; // Shake for 10 frames
+      targetFlower = flower;
     }
   }
 }
