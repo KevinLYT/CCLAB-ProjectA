@@ -12,7 +12,7 @@ let outOfBoundsTimer1 = 0; // Timer for fish1 being out of bounds
 // fish 2
 let x2, y2, vx2, vy2, size2, color2;
 let outOfBoundsTimer2 = 0; // Timer for fish2 being out of bounds
-
+let targetFlower = null;
 let ripples = []; // ripples
 
 //荷花
