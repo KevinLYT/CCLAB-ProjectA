@@ -36,7 +36,7 @@ function setup() {
   y1 = random(height);
   vx1 = random(-2, 2); // Increase initial speed
   vy1 = random(-2, 2); // Increase initial speed
-  size1 = random(50, 75); // Increase size by 30%
+  size1 = random(60, 85); // Increase size by 30%
   color1 = color(255,150,0);
 
   // fish2
@@ -44,7 +44,7 @@ function setup() {
   y2 = random(height);
   vx2 = random(-2, 2); // Increase initial speed
   vy2 = random(-2, 2); // Increase initial speed
-  size2 = random(50, 85); // Increase size by 30%
+  size2 = random(65, 95); // Increase size by 30%
   color2 = color(255,255,255);
 }
 
