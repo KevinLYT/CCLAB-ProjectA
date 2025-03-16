@@ -20,7 +20,8 @@ let flowers = [
   { x: 100, y: 300, size: 45, shake: 0 },
   { x: 400, y: 250, size: 55, shake: 0 },
   { x: 250, y: 100, size: 40, shake: 0 },
-  { x: 650, y: 400, size: 55, shake: 0 }
+  { x: 650, y: 400, size: 55, shake: 0 },
+  { x: 520, y: 140, size: 50, shake: 0 }
 ];
 
 // 速度上限
