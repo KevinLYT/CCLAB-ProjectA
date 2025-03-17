@@ -29,8 +29,7 @@ const maxSpeed = 3; // 最大速度
 
 function setup() {
   let canvas = createCanvas(800, 500);
-  canvas.id("p5-canvas");
-  canvas.parent("p5-canvas-container");
+
 
   // fish1
   x1 = random(width);
@@ -191,7 +190,6 @@ function updateCreature2() {
     ripples.push({ x: x2, y: y2, size: 5, alpha: 100 });
   }
 }
-
 function drawFish(x, y, size, col, vx, vy) {
   push();
   translate(x, y);
@@ -199,7 +197,7 @@ function drawFish(x, y, size, col, vx, vy) {
   fill(col);
   noStroke();
 
-  // Body with a more streamlined shape
+  // 身体保持原样
   beginShape();
   for (let i = 0; i < PI; i += PI / 10) {
     let sx = cos(i) * size * 0.5;
@@ -213,14 +211,49 @@ function drawFish(x, y, size, col, vx, vy) {
   }
   endShape(CLOSE);
 
-  // Tail (connected smoothly)
+   // 增强版尾巴
+  let i = frameCount;
+  let tailBaseX = -size * 0.6;
+  let tailBaseY = 0;
+  let cosValue = cos(i / 10) * size * 0.1; // 增加摆动幅度
+  
+  push();
+  translate(tailBaseX, tailBaseY);
+  rotate(-HALF_PI);
+  scale(size/100 * 1.3); // 放大30%
+  
   fill(col);
+  noStroke();
   beginShape();
-  vertex(-size * 0.4, 0);
-  vertex(-size * 0.6, -size * 0.25);
-  vertex(-size * 0.9, 0);
-  vertex(-size * 0.6, size * 0.25);
-  endShape(CLOSE);
+  // 修改后的控制点（宽度加倍）
+  curveVertex(0, 0);
+  curveVertex(0, 0);
+  curveVertex(3, -3);  // 加宽起点
+  curveVertex(7, -12 + cosValue);
+  curveVertex(14, -18 + cosValue * 0.6);  // 横向扩大
+  curveVertex(21, -22 + cosValue * 1);  // 长度和宽度同时增加
+  curveVertex(28, -22 + cosValue * 1.4);
+  curveVertex(35, -18 + cosValue * 0.8);
+  curveVertex(28, -26 + cosValue * 1.2);
+  curveVertex(21, -30 + cosValue * 0.5);  // 加大弯曲幅度
+  curveVertex(14, -26 + cosValue * 0.5);
+  curveVertex(7, -18 + cosValue);
+  curveVertex(0, -9);  // 加宽基部
+  curveVertex(-7, -18 + cosValue);
+  curveVertex(-14, -26 + cosValue * 0.5);
+  curveVertex(-21, -30 + cosValue * 1.0);
+  curveVertex(-28, -26 + cosValue * 1.2);
+  curveVertex(-35, -18 + cosValue * 0.8);
+  curveVertex(-28, -22 + cosValue * 1.4);
+  curveVertex(-21, -22 + cosValue * 1.2);
+  curveVertex(-14, -18 + cosValue * 0.6);
+  curveVertex(-7, -12 + cosValue);
+  curveVertex(-3, -4);  // 对称加宽
+  curveVertex(0, 0);
+  curveVertex(0, 0);
+  endShape();
+  pop();
+
 
   // Dorsal fin
   fill(col);
