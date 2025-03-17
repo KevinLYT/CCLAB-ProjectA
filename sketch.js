@@ -192,46 +192,79 @@ function updateCreature2() {
   }
 }
 
-// Draw a fish shape
 function drawFish(x, y, size, col, vx, vy) {
   push();
   translate(x, y);
   rotate(atan2(vy, vx));
   fill(col);
   noStroke();
-  ellipse(0, 0, size, size * 0.6);
-  triangle(-size * 0.6, 0, -size, -size * 0.3, -size, size * 0.3);
 
-  if (red(col) === 255 && green(col) === 255 && blue(col) === 255) {
-    fill(0);
-  } else {
-    fill(255);
+  // Body with a more streamlined shape
+  beginShape();
+  for (let i = 0; i < PI; i += PI / 10) {
+    let sx = cos(i) * size * 0.5;
+    let sy = sin(i) * size * 0.2;
+    vertex(sx, sy);
   }
-  ellipse(size * 0.2, -size * 0.1, size * 0.1, size * 0.1);
+  for (let i = PI; i < TWO_PI; i += PI / 10) {
+    let sx = cos(i) * size * 0.6;
+    let sy = sin(i) * size * 0.3;
+    vertex(sx, sy);
+  }
+  endShape(CLOSE);
 
+  // Tail (connected smoothly)
+  fill(col);
+  beginShape();
+  vertex(-size * 0.4, 0);
+  vertex(-size * 0.6, -size * 0.25);
+  vertex(-size * 0.9, 0);
+  vertex(-size * 0.6, size * 0.25);
+  endShape(CLOSE);
+
+  // Dorsal fin
+  fill(col);
+  beginShape();
+  vertex(-size * 0.2, -size * 0.2);
+  vertex(0, -size * 0.4);
+  vertex(size * 0.2, -size * 0.2);
+  endShape(CLOSE);
+
+  // Pectoral fins
+  fill(col);
+  beginShape();
+  vertex(size * 0.1, size * 0.1);
+  vertex(size * 0.3, size * 0.2);
+  vertex(size * 0.1, size * 0.3);
+  endShape(CLOSE);
+
+  // Eye with contrasting color
+  fill(red(col) > 200 ? 0 : 255);
+  ellipse(size * 0.3, -size * 0.05, size * 0.1, size * 0.1);
+  
   pop();
 }
 
-// draw ripples
+// Improved water ripples effect
 function drawRipples() {
   for (let i = ripples.length - 1; i >= 0; i--) {
     let ripple = ripples[i];
     noFill();
-    stroke(200, 200, 255, ripple.alpha);
-    strokeWeight(2);
-    ellipse(ripple.x, ripple.y, ripple.size, ripple.size);
+    stroke(180, 180, 255, ripple.alpha);
+    strokeWeight(1.5);
+    for (let j = 0; j < 3; j++) {
+      ellipse(ripple.x, ripple.y, ripple.size + j * 5, ripple.size + j * 5);
+    }
+    ripple.size += 2;
+    ripple.alpha -= 3;
 
-    ripple.size += 1;
-    ripple.alpha -= 2;
-
-    // if ripple cannot be seen, remove it
     if (ripple.alpha <= 0) {
       ripples.splice(i, 1);
     }
   }
 }
 
-// draw flowers
+// Improved lotus flower
 function drawFlowers() {
   for (let flower of flowers) {
     push();
@@ -239,23 +272,33 @@ function drawFlowers() {
 
     // Shake effect
     if (flower.shake > 0) {
-      translate(random(-2, 2), random(-2, 2));
+      translate(random(-1, 1), random(-1, 1));
       flower.shake--;
     }
 
     // Stem
-    stroke(50, 150, 50);
-    strokeWeight(5);
+    stroke(50, 120, 50);
+    strokeWeight(4);
     line(0, 0, 0, 50);
 
-    // Flower (ellipse)
+    // Petals (smaller and realistic)
     noStroke();
-    fill(255, 100, 150); // Pink color
-    ellipse(0, -20, flower.size, flower.size * 0.8);
+    fill(255, 120, 150); 
+    for (let i = 0; i < 6; i++) {
+      push();
+      rotate(PI / 3 * i);
+      ellipse(0, -10, flower.size * 0.5, flower.size * 0.8);
+      pop();
+    }
+
+    // Center of flower
+    fill(255, 200, 50);
+    ellipse(0, -3, flower.size * 0.3, flower.size * 0.3);
 
     pop();
   }
 }
+
 
 // check if fish are near flowers
 function checkFlowerInteraction() {
