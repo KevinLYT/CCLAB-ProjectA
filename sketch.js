@@ -14,6 +14,8 @@ let x2, y2, vx2, vy2, size2, color2;
 let outOfBoundsTimer2 = 0; // Timer for fish2 being out of bounds
 let targetFlower = null;
 let ripples = []; // ripples
+let attractionTimer = 0; // Timer to track how long the fish has been attracted to the flower
+const attractionDuration = 600; // 10 seconds (60 frames per second * 10)
 
 //荷花
 let flowers = [
@@ -362,6 +364,7 @@ function mousePressed() {
     if (distToFlower < 30) {
       flower.shake = 10; // Shake for 10 frames
       targetFlower = flower;
+      attractionTimer = 0; // Reset the timer when a new flower is targeted
     }
   }
 }
